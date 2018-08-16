@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="db_crmModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="dd_empresa">
+          <Key>
+            <PropertyRef Name="empresaID" />
+          </Key>
+          <Property Name="empresaID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="estatusID" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="telefono" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="callenum" Type="varchar" MaxLength="50" />
+          <Property Name="id_codigo" Type="int" />
+          <Property Name="fecha_registro" Type="date" />
+        </EntityType>
+        <EntityType Name="dd_sepomex">
+          <Key>
+            <PropertyRef Name="id_codigo" />
+          </Key>
+          <Property Name="id_codigo" Type="int" Nullable="false" />
+          <Property Name="d_codigo" Type="varchar" MaxLength="50" />
+          <Property Name="d_asenta" Type="varchar" MaxLength="150" />
+          <Property Name="d_tipo_asenta" Type="varchar" MaxLength="50" />
+          <Property Name="d_mnpio" Type="varchar" MaxLength="50" />
+          <Property Name="d_estado" Type="varchar" MaxLength="50" />
+          <Property Name="d_ciudad" Type="varchar" MaxLength="50" />
+          <Property Name="d_cp" Type="varchar" MaxLength="50" />
+          <Property Name="c_estado" Type="varchar" MaxLength="50" />
+          <Property Name="c_oficina" Type="varchar" MaxLength="50" />
+          <Property Name="c_cp" Type="varchar" MaxLength="50" />
+          <Property Name="c_tipo_asenta" Type="varchar" MaxLength="50" />
+          <Property Name="c_mnpio" Type="varchar" MaxLength="50" />
+          <Property Name="id_asenta_cpcons" Type="int" />
+          <Property Name="d_zona" Type="varchar" MaxLength="50" />
+          <Property Name="c_cve_ciudad" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="dd_usuarios">
+          <Key>
+            <PropertyRef Name="usuarioID" />
+          </Key>
+          <Property Name="usuarioID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="estatusID" Type="int" />
+          <Property Name="generoID" Type="int" />
+          <Property Name="tipo_usuarioID" Type="int" />
+          <Property Name="nombres" Type="varchar" MaxLength="50" />
+          <Property Name="a_paterno" Type="varchar" MaxLength="50" />
+          <Property Name="a_materno" Type="varchar" MaxLength="50" />
+          <Property Name="codigo_usuarios" Type="varchar" MaxLength="50" />
+          <Property Name="clave" Type="varchar" MaxLength="50" />
+          <Property Name="fecha_nacimiento" Type="date" />
+          <Property Name="fecha_registro" Type="datetime" />
+          <Property Name="empresaID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="fact_estatus">
+          <Key>
+            <PropertyRef Name="estatusID" />
+          </Key>
+          <Property Name="estatusID" Type="int" Nullable="false" />
+          <Property Name="desc_estatus" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="fact_genero">
+          <Key>
+            <PropertyRef Name="generoID" />
+          </Key>
+          <Property Name="generoID" Type="int" Nullable="false" />
+          <Property Name="desc_genero" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="fact_mensajes">
+          <Key>
+            <PropertyRef Name="mensajesID" />
+          </Key>
+          <Property Name="mensajesID" Type="int" Nullable="false" />
+          <Property Name="desc_mensajes" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="fact_tipo_usuario">
+          <Key>
+            <PropertyRef Name="tipo_usuarioID" />
+          </Key>
+          <Property Name="tipo_usuarioID" Type="int" Nullable="false" />
+          <Property Name="desc_tipo_usuario" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_dd_empresa_fact_estatus">
+          <End Role="fact_estatus" Type="Self.fact_estatus" Multiplicity="0..1" />
+          <End Role="dd_empresa" Type="Self.dd_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_estatus">
+              <PropertyRef Name="estatusID" />
+            </Principal>
+            <Dependent Role="dd_empresa">
+              <PropertyRef Name="estatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_empresa_inf_sepomex">
+          <End Role="dd_sepomex" Type="Self.dd_sepomex" Multiplicity="0..1" />
+          <End Role="dd_empresa" Type="Self.dd_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dd_sepomex">
+              <PropertyRef Name="id_codigo" />
+            </Principal>
+            <Dependent Role="dd_empresa">
+              <PropertyRef Name="id_codigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_dd_empresa">
+          <End Role="dd_empresa" Type="Self.dd_empresa" Multiplicity="1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dd_empresa">
+              <PropertyRef Name="empresaID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="empresaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_fact_estatus">
+          <End Role="fact_estatus" Type="Self.fact_estatus" Multiplicity="0..1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_estatus">
+              <PropertyRef Name="estatusID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="estatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_fact_genero">
+          <End Role="fact_genero" Type="Self.fact_genero" Multiplicity="0..1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_genero">
+              <PropertyRef Name="generoID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="generoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_fact_tipo_usuario">
+          <End Role="fact_tipo_usuario" Type="Self.fact_tipo_usuario" Multiplicity="0..1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_tipo_usuario">
+              <PropertyRef Name="tipo_usuarioID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="tipo_usuarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_crmModelStoreContainer">
+          <EntitySet Name="dd_empresa" EntityType="Self.dd_empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dd_sepomex" EntityType="Self.dd_sepomex" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dd_usuarios" EntityType="Self.dd_usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fact_estatus" EntityType="Self.fact_estatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fact_genero" EntityType="Self.fact_genero" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fact_mensajes" EntityType="Self.fact_mensajes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fact_tipo_usuario" EntityType="Self.fact_tipo_usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dd_empresa_fact_estatus" Association="Self.FK_dd_empresa_fact_estatus">
+            <End Role="fact_estatus" EntitySet="fact_estatus" />
+            <End Role="dd_empresa" EntitySet="dd_empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_empresa_inf_sepomex" Association="Self.FK_dd_empresa_inf_sepomex">
+            <End Role="dd_sepomex" EntitySet="dd_sepomex" />
+            <End Role="dd_empresa" EntitySet="dd_empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_dd_empresa" Association="Self.FK_dd_usuarios_dd_empresa">
+            <End Role="dd_empresa" EntitySet="dd_empresa" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_fact_estatus" Association="Self.FK_dd_usuarios_fact_estatus">
+            <End Role="fact_estatus" EntitySet="fact_estatus" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_fact_genero" Association="Self.FK_dd_usuarios_fact_genero">
+            <End Role="fact_genero" EntitySet="fact_genero" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_fact_tipo_usuario" Association="Self.FK_dd_usuarios_fact_tipo_usuario">
+            <End Role="fact_tipo_usuario" EntitySet="fact_tipo_usuario" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_crmModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="dd_empresa">
+          <Key>
+            <PropertyRef Name="empresaID" />
+          </Key>
+          <Property Name="empresaID" Type="Guid" Nullable="false" />
+          <Property Name="estatusID" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="callenum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_codigo" Type="Int32" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="fact_estatus" Relationship="Self.FK_dd_empresa_fact_estatus" FromRole="dd_empresa" ToRole="fact_estatus" />
+          <NavigationProperty Name="dd_sepomex" Relationship="Self.FK_dd_empresa_inf_sepomex" FromRole="dd_empresa" ToRole="dd_sepomex" />
+          <NavigationProperty Name="dd_usuarios" Relationship="Self.FK_dd_usuarios_dd_empresa" FromRole="dd_empresa" ToRole="dd_usuarios" />
+        </EntityType>
+        <EntityType Name="dd_sepomex">
+          <Key>
+            <PropertyRef Name="id_codigo" />
+          </Key>
+          <Property Name="id_codigo" Type="Int32" Nullable="false" />
+          <Property Name="d_codigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="d_asenta" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="d_tipo_asenta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="d_mnpio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="d_estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="d_ciudad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="d_cp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="c_estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="c_oficina" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="c_cp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="c_tipo_asenta" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="c_mnpio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="id_asenta_cpcons" Type="Int32" />
+          <Property Name="d_zona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="c_cve_ciudad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dd_empresa" Relationship="Self.FK_dd_empresa_inf_sepomex" FromRole="dd_sepomex" ToRole="dd_empresa" />
+        </EntityType>
+        <EntityType Name="dd_usuarios">
+          <Key>
+            <PropertyRef Name="usuarioID" />
+          </Key>
+          <Property Name="usuarioID" Type="Guid" Nullable="false" />
+          <Property Name="estatusID" Type="Int32" />
+          <Property Name="generoID" Type="Int32" />
+          <Property Name="tipo_usuarioID" Type="Int32" />
+          <Property Name="nombres" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="a_paterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="a_materno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_usuarios" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="clave" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_nacimiento" Type="DateTime" Precision="0" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="3" />
+          <Property Name="empresaID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="dd_empresa" Relationship="Self.FK_dd_usuarios_dd_empresa" FromRole="dd_usuarios" ToRole="dd_empresa" />
+          <NavigationProperty Name="fact_estatus" Relationship="Self.FK_dd_usuarios_fact_estatus" FromRole="dd_usuarios" ToRole="fact_estatus" />
+          <NavigationProperty Name="fact_genero" Relationship="Self.FK_dd_usuarios_fact_genero" FromRole="dd_usuarios" ToRole="fact_genero" />
+          <NavigationProperty Name="fact_tipo_usuario" Relationship="Self.FK_dd_usuarios_fact_tipo_usuario" FromRole="dd_usuarios" ToRole="fact_tipo_usuario" />
+        </EntityType>
+        <EntityType Name="fact_estatus">
+          <Key>
+            <PropertyRef Name="estatusID" />
+          </Key>
+          <Property Name="estatusID" Type="Int32" Nullable="false" />
+          <Property Name="desc_estatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dd_empresa" Relationship="Self.FK_dd_empresa_fact_estatus" FromRole="fact_estatus" ToRole="dd_empresa" />
+          <NavigationProperty Name="dd_usuarios" Relationship="Self.FK_dd_usuarios_fact_estatus" FromRole="fact_estatus" ToRole="dd_usuarios" />
+        </EntityType>
+        <EntityType Name="fact_genero">
+          <Key>
+            <PropertyRef Name="generoID" />
+          </Key>
+          <Property Name="generoID" Type="Int32" Nullable="false" />
+          <Property Name="desc_genero" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dd_usuarios" Relationship="Self.FK_dd_usuarios_fact_genero" FromRole="fact_genero" ToRole="dd_usuarios" />
+        </EntityType>
+        <EntityType Name="fact_mensajes">
+          <Key>
+            <PropertyRef Name="mensajesID" />
+          </Key>
+          <Property Name="mensajesID" Type="Int32" Nullable="false" />
+          <Property Name="desc_mensajes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="fact_tipo_usuario">
+          <Key>
+            <PropertyRef Name="tipo_usuarioID" />
+          </Key>
+          <Property Name="tipo_usuarioID" Type="Int32" Nullable="false" />
+          <Property Name="desc_tipo_usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dd_usuarios" Relationship="Self.FK_dd_usuarios_fact_tipo_usuario" FromRole="fact_tipo_usuario" ToRole="dd_usuarios" />
+        </EntityType>
+        <Association Name="FK_dd_empresa_fact_estatus">
+          <End Role="fact_estatus" Type="Self.fact_estatus" Multiplicity="0..1" />
+          <End Role="dd_empresa" Type="Self.dd_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_estatus">
+              <PropertyRef Name="estatusID" />
+            </Principal>
+            <Dependent Role="dd_empresa">
+              <PropertyRef Name="estatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_empresa_inf_sepomex">
+          <End Role="dd_sepomex" Type="Self.dd_sepomex" Multiplicity="0..1" />
+          <End Role="dd_empresa" Type="Self.dd_empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dd_sepomex">
+              <PropertyRef Name="id_codigo" />
+            </Principal>
+            <Dependent Role="dd_empresa">
+              <PropertyRef Name="id_codigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_dd_empresa">
+          <End Role="dd_empresa" Type="Self.dd_empresa" Multiplicity="1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dd_empresa">
+              <PropertyRef Name="empresaID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="empresaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_fact_estatus">
+          <End Role="fact_estatus" Type="Self.fact_estatus" Multiplicity="0..1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_estatus">
+              <PropertyRef Name="estatusID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="estatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_fact_genero">
+          <End Role="fact_genero" Type="Self.fact_genero" Multiplicity="0..1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_genero">
+              <PropertyRef Name="generoID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="generoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dd_usuarios_fact_tipo_usuario">
+          <End Role="fact_tipo_usuario" Type="Self.fact_tipo_usuario" Multiplicity="0..1" />
+          <End Role="dd_usuarios" Type="Self.dd_usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fact_tipo_usuario">
+              <PropertyRef Name="tipo_usuarioID" />
+            </Principal>
+            <Dependent Role="dd_usuarios">
+              <PropertyRef Name="tipo_usuarioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_crmEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="dd_empresa" EntityType="Self.dd_empresa" />
+          <EntitySet Name="dd_sepomex" EntityType="Self.dd_sepomex" />
+          <EntitySet Name="dd_usuarios" EntityType="Self.dd_usuarios" />
+          <EntitySet Name="fact_estatus" EntityType="Self.fact_estatus" />
+          <EntitySet Name="fact_genero" EntityType="Self.fact_genero" />
+          <EntitySet Name="fact_mensajes" EntityType="Self.fact_mensajes" />
+          <EntitySet Name="fact_tipo_usuario" EntityType="Self.fact_tipo_usuario" />
+          <AssociationSet Name="FK_dd_empresa_fact_estatus" Association="Self.FK_dd_empresa_fact_estatus">
+            <End Role="fact_estatus" EntitySet="fact_estatus" />
+            <End Role="dd_empresa" EntitySet="dd_empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_empresa_inf_sepomex" Association="Self.FK_dd_empresa_inf_sepomex">
+            <End Role="dd_sepomex" EntitySet="dd_sepomex" />
+            <End Role="dd_empresa" EntitySet="dd_empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_dd_empresa" Association="Self.FK_dd_usuarios_dd_empresa">
+            <End Role="dd_empresa" EntitySet="dd_empresa" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_fact_estatus" Association="Self.FK_dd_usuarios_fact_estatus">
+            <End Role="fact_estatus" EntitySet="fact_estatus" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_fact_genero" Association="Self.FK_dd_usuarios_fact_genero">
+            <End Role="fact_genero" EntitySet="fact_genero" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dd_usuarios_fact_tipo_usuario" Association="Self.FK_dd_usuarios_fact_tipo_usuario">
+            <End Role="fact_tipo_usuario" EntitySet="fact_tipo_usuario" />
+            <End Role="dd_usuarios" EntitySet="dd_usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_crmModelStoreContainer" CdmEntityContainer="db_crmEntities">
+          <EntitySetMapping Name="dd_empresa">
+            <EntityTypeMapping TypeName="db_crmModel.dd_empresa">
+              <MappingFragment StoreEntitySet="dd_empresa">
+                <ScalarProperty Name="empresaID" ColumnName="empresaID" />
+                <ScalarProperty Name="estatusID" ColumnName="estatusID" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="callenum" ColumnName="callenum" />
+                <ScalarProperty Name="id_codigo" ColumnName="id_codigo" />
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dd_sepomex">
+            <EntityTypeMapping TypeName="db_crmModel.dd_sepomex">
+              <MappingFragment StoreEntitySet="dd_sepomex">
+                <ScalarProperty Name="id_codigo" ColumnName="id_codigo" />
+                <ScalarProperty Name="d_codigo" ColumnName="d_codigo" />
+                <ScalarProperty Name="d_asenta" ColumnName="d_asenta" />
+                <ScalarProperty Name="d_tipo_asenta" ColumnName="d_tipo_asenta" />
+                <ScalarProperty Name="d_mnpio" ColumnName="d_mnpio" />
+                <ScalarProperty Name="d_estado" ColumnName="d_estado" />
+                <ScalarProperty Name="d_ciudad" ColumnName="d_ciudad" />
+                <ScalarProperty Name="d_cp" ColumnName="d_cp" />
+                <ScalarProperty Name="c_estado" ColumnName="c_estado" />
+                <ScalarProperty Name="c_oficina" ColumnName="c_oficina" />
+                <ScalarProperty Name="c_cp" ColumnName="c_cp" />
+                <ScalarProperty Name="c_tipo_asenta" ColumnName="c_tipo_asenta" />
+                <ScalarProperty Name="c_mnpio" ColumnName="c_mnpio" />
+                <ScalarProperty Name="id_asenta_cpcons" ColumnName="id_asenta_cpcons" />
+                <ScalarProperty Name="d_zona" ColumnName="d_zona" />
+                <ScalarProperty Name="c_cve_ciudad" ColumnName="c_cve_ciudad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dd_usuarios">
+            <EntityTypeMapping TypeName="db_crmModel.dd_usuarios">
+              <MappingFragment StoreEntitySet="dd_usuarios">
+                <ScalarProperty Name="usuarioID" ColumnName="usuarioID" />
+                <ScalarProperty Name="estatusID" ColumnName="estatusID" />
+                <ScalarProperty Name="generoID" ColumnName="generoID" />
+                <ScalarProperty Name="tipo_usuarioID" ColumnName="tipo_usuarioID" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="a_paterno" ColumnName="a_paterno" />
+                <ScalarProperty Name="a_materno" ColumnName="a_materno" />
+                <ScalarProperty Name="codigo_usuarios" ColumnName="codigo_usuarios" />
+                <ScalarProperty Name="clave" ColumnName="clave" />
+                <ScalarProperty Name="fecha_nacimiento" ColumnName="fecha_nacimiento" />
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="empresaID" ColumnName="empresaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fact_estatus">
+            <EntityTypeMapping TypeName="db_crmModel.fact_estatus">
+              <MappingFragment StoreEntitySet="fact_estatus">
+                <ScalarProperty Name="estatusID" ColumnName="estatusID" />
+                <ScalarProperty Name="desc_estatus" ColumnName="desc_estatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fact_genero">
+            <EntityTypeMapping TypeName="db_crmModel.fact_genero">
+              <MappingFragment StoreEntitySet="fact_genero">
+                <ScalarProperty Name="generoID" ColumnName="generoID" />
+                <ScalarProperty Name="desc_genero" ColumnName="desc_genero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fact_mensajes">
+            <EntityTypeMapping TypeName="db_crmModel.fact_mensajes">
+              <MappingFragment StoreEntitySet="fact_mensajes">
+                <ScalarProperty Name="mensajesID" ColumnName="mensajesID" />
+                <ScalarProperty Name="desc_mensajes" ColumnName="desc_mensajes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fact_tipo_usuario">
+            <EntityTypeMapping TypeName="db_crmModel.fact_tipo_usuario">
+              <MappingFragment StoreEntitySet="fact_tipo_usuario">
+                <ScalarProperty Name="tipo_usuarioID" ColumnName="tipo_usuarioID" />
+                <ScalarProperty Name="desc_tipo_usuario" ColumnName="desc_tipo_usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

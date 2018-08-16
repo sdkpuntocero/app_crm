@@ -1,0 +1,95 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="sitio.master.cs" Inherits="app_crm.sitio" %>
+
+<!DOCTYPE html>
+
+<html lang="es-mx">
+<head runat="server">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+	<!-- Bootstrap -->
+	<script src="Scripts/jquery-3.3.1.min.js"></script>
+	<script src="Scripts/bootstrap.min.js"></script>
+	<link href="Content/bootstrap.min.css" rel="stylesheet" />
+	<link href="estilos/estilo.css" rel="stylesheet" />
+
+
+
+
+	<link rel="shortcut icon" href="img/ico_crm.png" type="image/png" />
+
+	<title>/ CRM</title>
+
+	<asp:ContentPlaceHolder ID="head" runat="server">
+	</asp:ContentPlaceHolder>
+</head>
+<body>
+	<script>
+		function CheckOne(obj) {
+			var grid = obj.parentNode.parentNode.parentNode;
+			var inputs = grid.getElementsByTagName("input");
+			for (var i = 0; i < inputs.length; i++) {
+				if (inputs[i].type == "checkbox") {
+					if (obj.checked && inputs[i] != obj && inputs[i].checked) {
+						inputs[i].checked = false;
+					}
+				}
+			}
+		}
+	</script>
+
+
+	<form id="form1" runat="server">
+		<div>
+			<asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+			</asp:ContentPlaceHolder>
+		</div>
+	</form>
+	<br />
+	<footer class="section section-primary animated bounceInUp">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<h3>CRM</h3>
+					<h4>Software para la administración de la relación con los clientes</h4>
+					<p>
+						<i class="glyphicon glyphicon-map-marker"></i>
+					</p>
+					<p><i class=" glyphicon glyphicon-earphone"></i></p>
+					<p><i class="glyphicon glyphicon-envelope"></i></p>
+				</div>
+				<div class="col-sm-6">
+					<p class="text-info text-right">
+						<br />
+						<br />
+					</p>
+					<div class="row">
+						<div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
+							<a href="#"><i class="fab fa-twitter"></i></a>
+							&nbsp;
+							<a href="#"><i class="fab fa-facebook-f"></i></a>
+							&nbsp;
+							<a href="#"><i class="fab fa-google-plus-g"></i></a>
+							&nbsp;
+							<a href="#"><i class="fab fa-youtube"></i></a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 hidden-xs text-right">
+							<a href="#"><i class="fab fa-2x fa-twitter"></i></a>
+							&nbsp;
+							<a href="#"><i class="fab fa-2x fa-facebook-f"></i></a>
+							&nbsp;
+							<a href="#"><i class="fab fa-2x fa-google-plus-g"></i></a>
+							&nbsp;
+							<a href="#"><i class="fab fa-2x fa-youtube"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>
+
